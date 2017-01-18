@@ -1,0 +1,18 @@
+#include <bits/stdc++.h>
+
+struct SymTableEntry{
+	int type;
+	string token;
+	int id;
+};
+
+int main(){
+	map<string, SymTableEntry> symbolTable;
+	freopen("tokens.txt", "r", stdin);	
+	string lineBuff;
+	while(cin.getline(lineBuff)){
+		
+	}	
+
+	return 0;
+}
