@@ -1,0 +1,24 @@
+
+On Line Number : 2, Token : void  Is a KeyWord
+On Line Number : 2, Token : main  Is a KeyWord
+On Line Number : 2, Token : (  is a special character
+On Line Number : 2, Token : )  is a special character
+On Line Number : 3, Token : {  is a special character
+On Line Number : 4, Token : 	  is a Escape Sequence
+On Line Number : 4, Token : int  Is a KeyWord
+On Line Number : 4, Token : i  is identifier
+On Line Number : 4, Token : =  is an Operator
+On Line Number : 4, Token : 5 is a Real Number
+On Line Number : 4, Token : ;  is a special character
+On Line Number : 5, Token : 	  is a Escape Sequence
+On Line Number : 5, Token : printf  Is a KeyWord
+On Line Number : 5, Token : (  is a special character
+On Line Number : 5, Token : "%d\n" is a String inside Printf/scanf
+On Line Number : 5, Token : ,  is a special character
+On Line Number : 5, Token : i  is identifier
+On Line Number : 5, Token : )  is a special character
+On Line Number : 5, Token : ;  is a special character
+On Line Number : 6, Token : 	  is a Escape Sequence
+On Line Number : 6, Token : return  Is a KeyWord
+On Line Number : 6, Token : ;  is a special character
+On Line Number : 7, Token : }  is a special character

@@ -1,0 +1,95 @@
+
+ # is a special character
+ include is identifier 
+ < is an Operator
+ stdio is identifier
+ . is a special character
+ h is identifier
+ > is an Operator  
+
+ void Is a KeyWord 
+ main is identifier
+ ( is a special character
+ ) is a special character  
+
+ { is a special character  
+
+ 	 is a Escape Sequence
+ int Is a KeyWord 
+ a is identifier
+ = is an Operator
+ 5 is a Real Number
+ , is a special character 
+ b is identifier
+ = is an Operator
+ 3 is a Real Number
+ ; is a special character
+
+ 	 is a Escape Sequence
+ int Is a KeyWord 
+ i is identifier
+ = is an Operator
+ 0 is a Real Number
+ ; is a special character
+
+ 	 is a Escape Sequence
+ for is identifier
+ ( is a special character
+ i is identifier
+ ; is a special character 
+ i is identifier
+ < is an Operator
+ 5 is a Real Number
+ ; is a special character 
+ i is identifier
+ + is an Operator
+ + is an Operator
+ ) is a special character
+ { is a special character
+
+ 	 is a Escape Sequence
+ 	 is a Escape Sequence
+ printf Is a KeyWord
+ ( is a special character
+ " is a special character
+ %d is a format specifier 
+ " is a special character
+ , is a special character
+ i is identifier
+ ) is a special character
+ ; is a special character
+
+ 	 is a Escape Sequence
+ } is a special character
+
+ 	 is a Escape Sequence
+ int Is a KeyWord 
+ max is identifier 
+ = is an Operator 
+ ( is a special character
+ a is identifier
+ > is an Operator
+ b is identifier
+ ) is a special character 
+ ? is an Operator 
+ a is identifier : 
+ b is identifier
+ ; is a special character
+
+ 	 is a Escape Sequence
+ printf Is a KeyWord
+ ( is a special character
+ " is a special character
+ %d is a format specifier
+ \n is a Escape Sequence
+ " is a special character
+ , is a special character 
+ max is identifier
+ ) is a special character
+ ; is a special character
+
+ 	 is a Escape Sequence
+ return Is a KeyWord
+ ; is a special character
+
+ } is a special character

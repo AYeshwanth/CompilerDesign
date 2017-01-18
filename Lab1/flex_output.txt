@@ -1,0 +1,82 @@
+
+On Line Number : 1, Token : #  is a special character
+On Line Number : 1, Token : include  is identifier
+On Line Number : 1, Token : <  is an Operator
+On Line Number : 1, Token : stdio  is identifier
+On Line Number : 1, Token : .  is a special character
+On Line Number : 1, Token : h  is identifier
+On Line Number : 1, Token : >  is an Operator
+On Line Number : 2, Token : void  Is a KeyWord
+On Line Number : 2, Token : main  is identifier
+On Line Number : 2, Token : (  is a special character
+On Line Number : 2, Token : )  is a special character
+On Line Number : 3, Token : {  is a special character
+On Line Number : 4, Token : 	  is a Escape Sequence
+On Line Number : 4, Token : //   is a Single Line Comment
+On Line Number : 5, Token : 	  is a Escape Sequence
+On Line Number : 5, Token : /**/  is a Multi Line Comment
+On Line Number : 6, Token : 	  is a Escape Sequence
+On Line Number : 6, Token : int  Is a KeyWord
+On Line Number : 6, Token : a  is identifier
+On Line Number : 6, Token : =  is an Operator
+On Line Number : 6, Token : 5 is a Real Number
+On Line Number : 6, Token : ,  is a special character
+On Line Number : 6, Token : b  is identifier
+On Line Number : 6, Token : =  is an Operator
+On Line Number : 6, Token : 3 is a Real Number
+On Line Number : 6, Token : ;  is a special character
+On Line Number : 7, Token : 	  is a Escape Sequence
+On Line Number : 7, Token : int  Is a KeyWord
+On Line Number : 7, Token : i  is identifier
+On Line Number : 7, Token : =  is an Operator
+On Line Number : 7, Token : 0 is a Real Number
+On Line Number : 7, Token : ;  is a special character
+On Line Number : 8, Token : 	  is a Escape Sequence
+On Line Number : 8, Token : for  is identifier
+On Line Number : 8, Token : (  is a special character
+On Line Number : 8, Token : i  is identifier
+On Line Number : 8, Token : ;  is a special character
+On Line Number : 8, Token : i  is identifier
+On Line Number : 8, Token : <  is an Operator
+On Line Number : 8, Token : 5 is a Real Number
+On Line Number : 8, Token : ;  is a special character
+On Line Number : 8, Token : i  is identifier
+On Line Number : 8, Token : +  is an Operator
+On Line Number : 8, Token : +  is an Operator
+On Line Number : 8, Token : )  is a special character
+On Line Number : 8, Token : {  is a special character
+On Line Number : 9, Token : 	  is a Escape Sequence
+On Line Number : 9, Token : 	  is a Escape Sequence
+On Line Number : 9, Token : printf  Is a KeyWord
+On Line Number : 9, Token : (  is a special character
+On Line Number : 9, Token : "Hello %d " is a String inside Printf/scanf
+On Line Number : 9, Token : ,  is a special character
+On Line Number : 9, Token : i  is identifier
+On Line Number : 9, Token : )  is a special character
+On Line Number : 9, Token : ;  is a special character
+On Line Number : 10, Token : 	  is a Escape Sequence
+On Line Number : 10, Token : }  is a special character
+On Line Number : 11, Token : 	  is a Escape Sequence
+On Line Number : 11, Token : printf  Is a KeyWord
+On Line Number : 11, Token : (  is a special character
+On Line Number : 11, Token : "rhgfbwubrgqebigrbeqabfrgbeqbgrqnbegfr" is a String inside Printf/scanf
+On Line Number : 11, Token : )  is a special character
+On Line Number : 11, Token : ;  is a special character
+On Line Number : 12, Token : 	  is a Escape Sequence
+On Line Number : 12, Token : int  Is a KeyWord
+On Line Number : 12, Token : max  is identifier
+On Line Number : 12, Token : =  is an Operator
+On Line Number : 12, Token : ((a>b) ? a : b) is a Conditional Operator
+On Line Number : 12, Token : ;  is a special character
+On Line Number : 13, Token : 	  is a Escape Sequence
+On Line Number : 13, Token : printf  Is a KeyWord
+On Line Number : 13, Token : (  is a special character
+On Line Number : 13, Token : "%d\n" is a String inside Printf/scanf
+On Line Number : 13, Token : ,  is a special character
+On Line Number : 13, Token : max  is identifier
+On Line Number : 13, Token : )  is a special character
+On Line Number : 13, Token : ;  is a special character
+On Line Number : 14, Token : 	  is a Escape Sequence
+On Line Number : 14, Token : return  Is a KeyWord
+On Line Number : 14, Token : ;  is a special character
+On Line Number : 15, Token : }  is a special character
