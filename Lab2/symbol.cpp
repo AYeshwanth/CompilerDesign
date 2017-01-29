@@ -22,16 +22,11 @@ using namespace std;
 #define VOID 274
 #define STRUCT 275
 
-#define IF 276
-#define ELSE 277
-#define WHILE 278
+
 #define RETURN 279
 #define FOR 280
-#define DO 281
-#define SWITCH 282
-#define CASE 283
+
 #define BREAK 284
-#define DEFAULT 285
 #define CONTINUE 286
 
 #define PRINTF 287
@@ -39,6 +34,9 @@ using namespace std;
 
 #define L_CURLY 289
 #define R_CURLY 290
+
+#define L_SQ 299
+#define R_SQ 300
 
 #define ASSN 291
 #define ADD 292
@@ -50,65 +48,58 @@ using namespace std;
 
 #define FUNCTION 333
 
-#define L_SQ 299
-#define R_SQ 300
-#define IDENTIFIER_ARRAY 301
-
 #define STRING 298
 
-struct symbolTable
+#define IDENTIFIER_ARRAY 301
+
+#define CONDITIONAL_OPERATOR 321
+
+#define PREPROC 322
+
+struct symbol_table_entry
 {
 	/* data */
 	string name;
 	vector<int> type;
 	int addr;
 };
-map<string,symbolTable> st;
-void insert(struct symbolTable s)
-{
-	/* data */
-	st[s.name]=s;
-}
 
-bool lookup(string name)
-{
-	if(st.find(name)!=st.end())
-		return true;
-	else
-		return false;
-}
+map<string,symbol_table_entry> symbol_table;
+
 int main()
 {
-	st.clear();
+	symbol_table.clear();
 	freopen("../Lab2/tokens.txt","r",stdin);
 	string line;
 	int num=1;
-	struct symbolTable s;
+	struct symbol_table_entry entry;
 	int lastType=-1;
 	while(getline(cin,line))
 	{
-		s.type.clear();
-		s.type.push_back(stoi(line.substr(16,3)));
-		s.name=line.substr(28);
-		if(s.type[0] == INT or s.type[0] == DOUBLE or s.type[0] == PRINTF or s.type[0] == IDENTIFIER_ARRAY or s.type[0] == FUNCTION)
+		entry.type.clear();
+		entry.type.push_back(stoi(line.substr(16,3)));
+		entry.name=line.substr(28);
+		if(entry.type[0] == PREPROC or entry.type[0] == INT or entry.type[0] == DOUBLE or entry.type[0] == PRINTF or entry.type[0] == IDENTIFIER_ARRAY or entry.type[0] == FUNCTION or entry.type[0] == CONDITIONAL_OPERATOR)
 		{
-			lastType=s.type[0];
+			lastType=entry.type[0];
+			cout<<entry.type[0]<<endl;
 		}
-		if(s.type[0] == IDENTIFIER || s.type[0] == IDENTIFIER_ARRAY || s.type[0] == PRINTF || s.type[0] == FUNCTION){
-			if(!lookup(s.name)){
-				s.type[0] = (lastType==-1)?IDENTIFIER:lastType;
-				s.addr=num++;
-				insert(s);
+		if(entry.type[0] == IDENTIFIER || entry.type[0] == IDENTIFIER_ARRAY || entry.type[0] == PRINTF || entry.type[0] == FUNCTION || entry.type[0] == CONDITIONAL_OPERATOR){
+			if(symbol_table.find(entry.name) == symbol_table.end()){
+				cout<<entry.type[0]<<endl;
+				entry.type[0] = (lastType==-1)?IDENTIFIER:lastType;
+				entry.addr=num++;
+				symbol_table[entry.name] = entry;
 			}
 		}
 		
 	}
-	map<string,symbolTable>::iterator it;
-	for(it=st.begin();it!=st.end();++it)
+	map<string,symbol_table_entry>::iterator it;
+	for(it=symbol_table.begin();it!=symbol_table.end();++it)
 	{
-		s=it->second;
-		cout<<s.addr<<"  "<<s.name<<"  "<<s.type[0]<<endl;
+		entry=it->second;
+		cout<<entry.addr<<"  "<<entry.name<<"  "<<entry.type[0]<<endl;
 	}
 	
-	
+	return 0;
 }
