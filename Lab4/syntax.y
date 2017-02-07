@@ -3,53 +3,77 @@
 #include <stdlib.h>
 %}
 
-%token INT DOUBLE VOID 
+%token INT DOUBLE VOID CONSTANT STRING_LITERAL
 %token FOR CONDITIONAL_OPERATOR
 %token PRINTF RETURN
+%token BREAK CONTINUE
 %token STRUCT 
 %token IDENTIFIER NUMBER
 %token PREPROC
 %token DOT
 
 %right '='
-%left AND OR
+%left DINCR DDCR
+%left AND OR 
 %left '<' '>' LT GT LE GE EQ NE
 %%
 
-start: Function
-		| Declaration
+start: Function start
+		| StructStmt start
+		| PREPROC start
+		| Declaration 
+		|
 		;
 
-Declaration: Type Assignment ';'
+Declaration: 
+		ReturnStmt ';'
+		|Type Assignment ';'
 		| Assignment ';'
 		| FunctionCall ';'
 		| ArrayUsage ';'
 		| Type ArrayUsage ';'
 		| StructStmt ';'
+		| PrintFunc ';'
 		| error
 		;
 
-Assignment: IDENTIFIER '=' Assignment
+ReturnStmt: RETURN ';'
+		| RETURN Assignment ';'
+		|
+		;
+
+Assignment: IDENTIFIER '=' Conditional_statement
 		| IDENTIFIER '=' FunctionCall
 		| IDENTIFIER '=' ArrayUsage
+		| IDENTIFIER '=' Assignment
 		| ArrayUsage '=' Assignment
 		| IDENTIFIER ',' Assignment
 		| NUMBER ',' Assignment
+		| CONSTANT ',' Assignment
 		| IDENTIFIER '+' Assignment
 		| IDENTIFIER '-' Assignment
 		| IDENTIFIER '*' Assignment
 		| IDENTIFIER '/' Assignment	
+		| IDENTIFIER DINCR
+		| IDENTIFIER DDCR
 		| NUMBER '+' Assignment
 		| NUMBER '-' Assignment
 		| NUMBER '*' Assignment
 		| NUMBER '/' Assignment
+		| CONSTANT '+' Assignment
+		| CONSTANT '-' Assignment
+		| CONSTANT '*' Assignment
+		| CONSTANT '/' Assignment
 		| '\'' Assignment '\''	
 		| '(' Assignment ')'
 		| '-' '(' Assignment ')'
 		| '-' NUMBER
 		| '-' IDENTIFIER
-		|   NUMBER
-		|   IDENTIFIER
+		| '-' CONSTANT
+		| NUMBER
+		| IDENTIFIER
+		| CONSTANT
+		| STRING_LITERAL
 		;
 
 FunctionCall : IDENTIFIER'('')'
@@ -82,7 +106,8 @@ StmtList:	StmtList Stmt
 
 Stmt: Declaration
 	| ForStmt
-	| PrintFunc
+	| RETURN Expr ';'
+	| Conditional_statement
 	| ';'
 	;
 
@@ -97,14 +122,54 @@ ForStmt: FOR '(' Expr ';' Expr ';' Expr ')' Stmt
        | FOR '(' Expr ')' CompoundStmt 
 	;
 
-StructStmt : STRUCT IDENTIFIER '{' Type Assignment '}'  
+struct_declaration_list
+	: struct_declaration
+	| struct_declaration_list struct_declaration
 	;
 
-PrintFunc : PRINTF '(' "\"" Expr "\""')' ';'
+struct_declaration
+	: specifier_qualifier_list struct_declarator_list ';'
 	;
 
-Expr:	
-	| Expr LE Expr 
+struct_declarator_list
+	: struct_declarator
+	| struct_declarator_list ',' struct_declarator
+	;
+
+specifier_qualifier_list
+	: Type specifier_qualifier_list
+	| Type
+	;
+
+struct_declarator
+	: declarator
+	| ':' constant_expression
+	| declarator ':' constant_expression
+	;
+
+
+StructStmt : STRUCT IDENTIFIER '{'
+	struct_declaration_list '}'
+	| STRUCT '{' struct_declaration_list '}'
+	;
+
+
+declarator
+	: pointer direct_declarator
+	| direct_declarator
+	;
+
+direct_declarator
+	: IDENTIFIER
+	| '(' declarator ')'
+	;
+
+pointer
+	: '*'
+	| '*' pointer
+	;
+
+Expr:	 Expr LE Expr 
 	| Expr GE Expr
 	| Expr NE Expr
 	| Expr EQ Expr
@@ -113,6 +178,18 @@ Expr:
 	| Assignment
 	| ArrayUsage
 	;
+
+PrintFunc : PRINTF '(' "\"" Expr "\""')' ';'
+	;
+
+
+Conditional_statement:  Expr '?' Assignment ':' Assignment 
+	| Expr
+	|
+	;
+
+constant_expression : Conditional_statement ;
+
 %%
 #include"lex.yy.c"
 #include<ctype.h>

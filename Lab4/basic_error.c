@@ -11,7 +11,7 @@ void main(){
 	i=j*k;
 	for(j=0; j<i; j++){
 		int t = j;
-		i = t<i ? t : j;
+		i = t<i ? t;
 	}
 	return;
 }
