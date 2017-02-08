@@ -48,6 +48,7 @@ Assignment: IDENTIFIER '=' Conditional_statement
 		| IDENTIFIER '=' Assignment
 		| ArrayUsage '=' Assignment
 		| IDENTIFIER ',' Assignment
+		| pointer Assignment
 		| NUMBER ',' Assignment
 		| CONSTANT ',' Assignment
 		| IDENTIFIER '+' Assignment
@@ -107,6 +108,8 @@ StmtList:	StmtList Stmt
 Stmt: Declaration
 	| ForStmt
 	| RETURN Expr ';'
+	| BREAK ';'
+	| CONTINUE ';'
 	| Conditional_statement
 	| ';'
 	;
@@ -183,7 +186,7 @@ PrintFunc : PRINTF '(' "\"" Expr "\""')' ';'
 	;
 
 
-Conditional_statement:  Expr '?' Assignment ':' Assignment 
+Conditional_statement:  Expr '?' Conditional_statement ':' Conditional_statement 
 	| Expr
 	|
 	;
