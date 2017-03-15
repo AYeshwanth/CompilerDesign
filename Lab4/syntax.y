@@ -21,7 +21,7 @@
 start: Function start
 		| StructStmt start
 		| PREPROC start
-		| Declaration 
+		| Declaration
 		|
 		;
 
