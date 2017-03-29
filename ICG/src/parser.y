@@ -13,7 +13,7 @@
 	char empty[2] = " ";
 	
 %}
-%token<str> ID 
+%token<str> ID
 %token NUM SIZEOF REAL
 %token PTR DOT
 %token TYPEDEF STRUCT
@@ -36,8 +36,8 @@
 
 %type<iValue> Type
 %type<realValue> NUM
-%type<str> Assignment ArrayUsage StatementDeclaration ValueVar REAL Expr STRING assign_operator Expression Oper VariableInit
-Stmt StmtList CompoundStmt Conditional_statement Conditonal_condition Conditional_Operator
+%type<str> Assignment ArrayUsage StatementDeclaration ValueVar REAL Expr STRING EqualTo Expression Oper VariableInit
+Stmt StmtList CompoundStmt Conditional_statement Conditonal_condition Conditional_Operator RelationalOperator
 %union {
  		int iValue; /* integer value */
  		float realValue;
@@ -63,7 +63,29 @@ Declaration: Type StatementDeclaration ';' {insertWithError($1, g_addr); g_addr+
 	| error	
 	;
 
-StatementDeclaration: ID {PushICGStack($1);} assign_operator {PushICGStack($3);} VariableInit ',' StatementDeclaration 
+StatementDeclaration: 
+
+	 ID {PushICGStack($1);} EqualTo {PushICGStack($3);} Conditional_statement
+		{ 
+		if(IsAlreadyPresent($1))
+			printf("\n%s Already declared\n", $1);
+		else{
+			identifierList.push_back($1); 
+			$$ = $1;
+		}
+	}
+	| ID {PushICGStack($1);} EqualTo {PushICGStack($3);} VariableInit
+		{ 
+		if(IsAlreadyPresent($1))
+			printf("\n%s Already declared\n", $1);
+		else{
+			identifierList.push_back($1); 
+			$$ = $1;
+		}
+		ICGCurrAssignCodeGenr();
+	}
+	|
+	ID {PushICGStack($1);} EqualTo {PushICGStack($3);} VariableInit ',' StatementDeclaration 
 	{ 
 		if(IsAlreadyPresent($1)){
 			printf("\n%s Already declared\n", $1);
@@ -94,27 +116,8 @@ StatementDeclaration: ID {PushICGStack($1);} assign_operator {PushICGStack($3);}
 		}
 	
 	}
-	| ID {PushICGStack($1);} assign_operator {PushICGStack($3);} VariableInit
-		{ 
-		if(IsAlreadyPresent($1))
-			printf("\n%s Already declared\n", $1);
-		else{
-			identifierList.push_back($1); 
-			$$ = $1;
-		}
-		ICGCurrAssignCodeGenr();
-	}
-	| ID {PushICGStack($1);} assign_operator {PushICGStack($3);} Conditional_statement
-		{ 
-		if(IsAlreadyPresent($1))
-			printf("\n%s Already declared\n", $1);
-		else{
-			identifierList.push_back($1); 
-			$$ = $1;
-		}
-		printf("------ Here ------");
-		ICGCurrAssignCodeGenr();
-	}
+
+	
 	;
 
 VariableInit: ValueVar {$$ = $1;}
@@ -128,7 +131,7 @@ VariableInit: ValueVar {$$ = $1;}
 	}
 	;
 
-ValueVar: ID { printf("----- Here : %s ------", $1); PushICGStack($1); $$ = $1;}
+ValueVar: ID { PushICGStack($1); $$ = $1;}
 	| NUM {PushICGStack(ToString($1)); $$ = ToString($1);}
 	| REAL {PushICGStack($1); $$ = $1;}
 	| STRING {PushICGStack($1); $$ = $1;}
@@ -140,7 +143,7 @@ Oper: '+'
 	| '/'
 	;
 /* Assignment block */
-Assignment: ID { PushICGStack($1);} assign_operator { PushICGStack($3); } Expression 
+Assignment: ID { PushICGStack($1);} EqualTo { PushICGStack($3); } Expression 
 	{
 		if(!IsAlreadyPresent($1)){
 			printf("%s Undeclared Variable.", $1);
@@ -152,7 +155,7 @@ Assignment: ID { PushICGStack($1);} assign_operator { PushICGStack($3); } Expres
 		}
 		ICGCurrAssignCodeGenr();
 	}
-	| ID {PushICGStack($1);} assign_operator {PushICGStack($3);} Conditional_statement
+	| ID {PushICGStack($1);} EqualTo {PushICGStack($3);} Conditional_statement
 	{
 		if(!IsAlreadyPresent($1)){
 			printf("%s Undeclared Variable.", $1);
@@ -164,7 +167,7 @@ Assignment: ID { PushICGStack($1);} assign_operator { PushICGStack($3); } Expres
 		}
 		ICGCurrAssignCodeGenr();	
 	}
-	| ArrayUsage assign_operator Expression
+	| ArrayUsage EqualTo Expression
 	| ID ',' Assignment
 	{
 		if(!IsAlreadyPresent($1)){
@@ -238,8 +241,11 @@ Expression: Expression '+' { strcpy(tokenStack[++tokenStackTop], "+"); } Express
 	| 	ArrayUsage { ICGCurrArrayCodeGenr(); } 
 	;
 
-assign_operator: '=' {char assign[2] = "="; $$=assign;}
-	| MUL_ASSIGN
+
+EqualTo : '=' {char assign[2] = "="; $$=assign;}
+	;
+
+assign_operator:  MUL_ASSIGN
 	| SUB_ASSIGN
 	| DIV_ASSIGN
 	| ADD_ASSIGN
@@ -308,12 +314,12 @@ Expr: Expression RelationalOperator Expression
 	| Assignment
 	;
 
-RelationalOperator: LE
-	| GE
-	| NE 
-	| EQ
-	| GT
-	| LT
+RelationalOperator: LE {strcpy(tokenStack[++tokenStackTop], "<=");}
+	| GE {strcpy(tokenStack[++tokenStackTop], ">=");}
+	| NE {strcpy(tokenStack[++tokenStackTop], "!=");}
+	| EQ {strcpy(tokenStack[++tokenStackTop], "==");}
+	| GT {strcpy(tokenStack[++tokenStackTop], ">");}
+	| LT {strcpy(tokenStack[++tokenStackTop], "<");}
 	;
 
 
@@ -323,7 +329,7 @@ Conditional_statement: '(' Conditional_Operator ')'
 Conditional_Operator: Conditonal_condition {ifAssignment();} '?' Expression {ifCondition();} ':' Expression { ifAfter(); $$ = $1;}
 	;
 
-Conditonal_condition: Expression RelationalOperator Expression 
+Conditonal_condition: Expression RelationalOperator Expression {ICGCurrCodeGenr();}
 	;
 
 

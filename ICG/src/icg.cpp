@@ -18,6 +18,7 @@ char *ToString(int x){
 void PushICGStack(char *a)
 {
 	strcpy(tokenStack[++tokenStackTop], a);
+	//printf("%s\n", a);
 	return;
 }
 
@@ -72,6 +73,8 @@ void ifCondition()
 	int x;
 	lanNumber++;
 	x=tokenLabls[labTokenStackTop--];
+	printf("%s %s %s\n",tokenStack[tokenStackTop-2], tokenStack[tokenStackTop-1], tokenStack[tokenStackTop]);
+	tokenStackTop--;
 	printf("goto L%d\n",lanNumber);
 	printf("L%d: \n",x); 
 	tokenLabls[++labTokenStackTop]=lanNumber;
@@ -82,7 +85,10 @@ void ifAfter()
 {
 	int y;
 	y=tokenLabls[labTokenStackTop--];
+	printf("%s %s %s\n",tokenStack[tokenStackTop-2], tokenStack[tokenStackTop-1], tokenStack[tokenStackTop]);
 	printf("L%d: \n",y);
+	
+	tokenStackTop = tokenStackTop-3;
 	return;
 }
 
