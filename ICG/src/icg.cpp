@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <bits/stdc++.h>
 
 char tstack[100][10];
 int top = -1;
@@ -8,6 +8,12 @@ char temp[2] = "t";
 int label[20];
 int lnum=0;
 int ltop=0;
+
+char *ToString(int x){
+	char buffer[20];
+	sprintf(buffer, "%d", x);
+	return buffer;
+}
 
 void printstack()
 {

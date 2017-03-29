@@ -10,7 +10,7 @@
 		int yylex();
 		void yyerror(char *);
 	}
-
+	char empty[2] = " ";
 	
 %}
 %token<str> ID 
@@ -35,7 +35,9 @@
 %left '*' '/'
 
 %type<iValue> Type
-%type<str> Assignment ArrayUsage StatementDeclaration ValueVar NUM REAL Expr STRING assign_operator Expression Oper VariableInit
+%type<realValue> NUM
+%type<str> Assignment ArrayUsage StatementDeclaration ValueVar REAL Expr STRING assign_operator Expression Oper VariableInit
+Stmt StmtList CompoundStmt
 %union {
  		int iValue; /* integer value */
  		float realValue;
@@ -125,10 +127,10 @@ VariableInit: ValueVar {$$ = $1;}
 	}
 	;
 
-ValueVar: ID {pushicg("$1"); $$ = $1;}
-	| NUM {pushicg("$1"); $$ = $1;}
-	| REAL {pushicg("$1"); $$ = $1;}
-	| STRING {pushicg("$1"); $$ = $1;}
+ValueVar: ID {pushicg($1); $$ = $1;}
+	| NUM {pushicg(ToString($1)); $$ = ToString($1);}
+	| REAL {pushicg($1); $$ = $1;}
+	| STRING {pushicg($1); $$ = $1;}
 	;
 
 Oper: '+' 
@@ -161,8 +163,10 @@ Assignment: ID { pushicg($1);} assign_operator { pushicg($3); } Expression
 			  	$$ = $1;
 		}
 	}
+	| ID DOUBLE_DCR {$$ = $1;}
+	| ID DOUBLE_INCR {$$ = $1;}
 	| ID { $$ = $1;}
-	| NUM {$$ = $1;}
+	| NUM {$$ = ToString($1);}
 	| REAL {$$ = $1;}
 	;
 
@@ -205,8 +209,8 @@ Expression: Expression '+' { strcpy(tstack[++top], "+"); } Expression
 		}
 	|   NUM 
 		{ 
-			$$ = $1;
-			pushicg($1); 
+			$$ = ToString($1);
+			pushicg(ToString($1)); 
 		}
 	|   REAL 
 		{
@@ -235,7 +239,7 @@ FunctionCall : ID'('')'
 	;
 
 /* Array Usage */
-ArrayUsage : ID'['Assignment']' 
+ArrayUsage : ID {pushicg($1);} '['Assignment']' 
 	;
 
 
@@ -251,20 +255,20 @@ ArgList:  ArgList ',' Arg
 	;
 Arg:	Type ID
 	;
-CompoundStmt:	'{' {saveST();}StmtList '}' {popST();}
+CompoundStmt:	'{' {saveST();} StmtList '}' {popST(); $$ = $3;} 
 	;
-StmtList:	StmtList Stmt
-	|
+StmtList:	StmtList Stmt {$$ = $2;}
+	| {$$ = empty;}
 	;
-Stmt: Declaration
-	| ForStmt
-	| IfStmt
-	| PrintFunc
-	| ';'
-	| RETURN ';'
-	| RETURN Assignment ';'
-	| BREAK ';'
-	| CONTINUE ';'
+Stmt: Declaration {$$ = empty;}
+	| ForStmt {$$ = empty;}
+	| IfStmt {$$ = empty;}
+	| PrintFunc {$$ = empty;}
+	| ';' {$$ = empty;}
+	| RETURN ';' {$$ = empty;}
+	| RETURN Assignment ';' {$$ = $2;}
+	| BREAK ';' {$$ = empty;}
+	| CONTINUE ';' {$$ = empty;}
 	;
 
 /* Type Identifier block */
@@ -274,10 +278,8 @@ Type:	INT
 	;
 
 /* For Block */
-ForStmt: FOR '(' Expr ';' Expr ';' Expr ')' Stmt 
-       | FOR '(' Expr ';' Expr ';' Expr ')' CompoundStmt
-       | FOR '(' Expr ')' Stmt 
-       | FOR '(' Expr ')' CompoundStmt 
+ForStmt: FOR '(' Expr {for1();} ';' Expr {for2();} ';' Expr {for3();} ')' Stmt {for4();} 
+       | FOR '(' Expr {for1();}';' Expr {for2();} ';' Expr {for3();} ')' CompoundStmt {for4();}
 	;
 
 /* IfStmt Block */
@@ -297,6 +299,7 @@ PrintFunc : PRINTF '(' STRING ')' ';'
 
 /*Expression Block*/
 Expr: Expression RelationalOperator Expression
+	| Assignment
 	;
 
 RelationalOperator: LE
