@@ -1,13 +1,13 @@
 #include <bits/stdc++.h>
 
-char tstack[100][10];
-int top = -1;
+char tokenStack[100][10];
+int tokenStackTop = -1;
 char id[2] = "0";
-char temp[2] = "t";
+char tempVarName[2] = "t";
 
-int label[20];
-int lnum=0;
-int ltop=0;
+int tokenLabls[20];
+int lanNumber=0;
+int labTokenStackTop=0;
 
 char *ToString(int x){
 	char buffer[20];
@@ -15,168 +15,113 @@ char *ToString(int x){
 	return buffer;
 }
 
-void printstack()
+void PushICGStack(char *a)
 {
-	int i;
-	for(i = 0; i <= top; i++)
-		printf("%s",tstack[i]);
-	printf("\n");
-}
-
-void pushicg(char *a)
-{
-	strcpy(tstack[++top], a);
-	//printstack();
+	strcpy(tokenStack[++tokenStackTop], a);
 	return;
 }
 
-void codegen()
+void ICGCurrCodeGenr()
 {
-	strcpy(temp, "t");
-	strcat(temp, id);
-	//printstack();
-	printf("%s = %s %s %s\n", temp, tstack[top-2], tstack[top-1], tstack[top]);
-	top -= 2;
-	strcpy(tstack[top], temp);
-	id[0]++;
-	//printstack();
-	return;
-}
-
-void codegen_assign()
-{
-	printf("%s %s %s\n", tstack[top-2], tstack[top-1], tstack[top]);
-	top -= 3;
-	//printstack();
-	return;
-}
-
-void codegen_array()
-{
-	strcpy(temp, "t");
-	strcat(temp, id);
-	printf("%s = %s * 4\n", temp, tstack[top] );
-	strcpy(tstack[top], temp);
-	id[0]++;
-	strcpy(temp, "t");
-	strcat(temp, id);
-	printf("%s = %s [ %s ]\n", temp, tstack[top-1], tstack[top]);
-	top -= 1;
-	strcpy(tstack[top], temp);
+	strcpy(tempVarName, "t");
+	strcat(tempVarName, id);
+	printf("%s = %s %s %s\n", tempVarName, tokenStack[tokenStackTop-2], tokenStack[tokenStackTop-1], tokenStack[tokenStackTop]);
+	tokenStackTop -= 2;
+	strcpy(tokenStack[tokenStackTop], tempVarName);
 	id[0]++;
 	return;
 }
 
-void if1()
+void ICGCurrAssignCodeGenr()
 {
-	 lnum++;
-	 strcpy(temp,"t");
-	 strcat(temp,id);
-	 printf("%s = not %s\n",temp,tstack[top--]);
-	 printf("if %s goto L%d\n",temp,lnum);
+	printf("%s %s %s\n", tokenStack[tokenStackTop-2], tokenStack[tokenStackTop-1], tokenStack[tokenStackTop]);
+	tokenStackTop -= 3;
+	return;
+}
+
+void ICGCurrArrayCodeGenr()
+{
+	strcpy(tempVarName, "t");
+	strcat(tempVarName, id);
+	printf("%s = %s * 4\n", tempVarName, tokenStack[tokenStackTop] );
+	strcpy(tokenStack[tokenStackTop], tempVarName);
+	id[0]++;
+	strcpy(tempVarName, "t");
+	strcat(tempVarName, id);
+	printf("%s = %s [ %s ]\n", tempVarName, tokenStack[tokenStackTop-1], tokenStack[tokenStackTop]);
+	tokenStackTop -= 1;
+	strcpy(tokenStack[tokenStackTop], tempVarName);
+	id[0]++;
+	return;
+}
+
+void ifAssignment()
+{
+	 lanNumber++;
+	 strcpy(tempVarName,"t");
+	 strcat(tempVarName,id);
+	 printf("%s = not %s\n",tempVarName,tokenStack[tokenStackTop--]);
+	 printf("if %s goto L%d\n",tempVarName,lanNumber);
 	 id[0]++;
-	 label[++ltop]=lnum;
+	 tokenLabls[++labTokenStackTop]=lanNumber;
 	 return;
 }
 
-void if2()
+void ifCondition()
 {
 	int x;
-	lnum++;
-	x=label[ltop--];
-	printf("goto L%d\n",lnum);
+	lanNumber++;
+	x=tokenLabls[labTokenStackTop--];
+	printf("goto L%d\n",lanNumber);
 	printf("L%d: \n",x); 
-	label[++ltop]=lnum;
+	tokenLabls[++labTokenStackTop]=lanNumber;
 	return;
 }
 
-void if3()
+void ifAfter()
 {
 	int y;
-	y=label[ltop--];
+	y=tokenLabls[labTokenStackTop--];
 	printf("L%d: \n",y);
 	return;
 }
 
-void while1()
+void ForInitialisation()
 {
-	lnum++;
-	printf("L%d: \n",lnum);
-	label[++ltop] = lnum;
+    lanNumber++;
+	printf("L%d: \n",lanNumber);
+	tokenLabls[++labTokenStackTop] = lanNumber;
 	return;
 }
 
-void while2()
+void ForCondition()
 {
-	lnum++;
- 	strcpy(temp,"t");
-	strcat(temp,id);
-	printf("%s = not %s\n",temp,tstack[top--]);
-	printf("if %s goto L%d\n",temp,lnum);
-	id[0]++;
-	label[++ltop]=lnum;
-	return;
-}
-
-void while3()
-{
-	int x;
-	x=label[ltop--];
-	printf("goto L%d\n",label[ltop--]);
-	printf("L%d: \n", x);
-	return;
-}
-
-void dowhile1()
-{
-	lnum++;
-	printf("L%d: \n",lnum);
-	label[++ltop] = lnum;
-	return;
-}
-
-void dowhile2()
-{
-	printf("if %s goto L%d\n",tstack[top--],label[ltop--]);
-	return;
-}
-
-void for1()
-{
-    lnum++;
-	printf("L%d: \n",lnum);
-	label[++ltop] = lnum;
-	return;
-}
-
-void for2()
-{
-    strcpy(temp,"t");
-    strcat(temp,id);
+    strcpy(tempVarName,"t");
+    strcat(tempVarName,id);
     id[0]++;
-    printf("%s = not %s\n",temp,tstack[top--]);
-    lnum++;
-    printf("if %s goto L%d\n",temp,lnum);
-    label[++ltop] = lnum;
-    lnum++;
-    printf("goto L%d\n",lnum);
-    label[++ltop] = lnum;
-    lnum++; 
-    printf("L%d: \n",lnum);
-    label[++ltop] = lnum;
+    printf("%s = not %s\n",tempVarName,tokenStack[tokenStackTop--]);
+    lanNumber++;
+    printf("if %s goto L%d\n",tempVarName,lanNumber);
+    tokenLabls[++labTokenStackTop] = lanNumber;
+    lanNumber++;
+    printf("goto L%d\n",lanNumber);
+    tokenLabls[++labTokenStackTop] = lanNumber;
+    lanNumber++; 
+    printf("L%d: \n",lanNumber);
+    tokenLabls[++labTokenStackTop] = lanNumber;
     return;
 }
-void for3()
+void ForChange()
 {
-    printf("goto L%d \n",label[ltop - 3]);
-    printf("L%d: \n",label[ltop - 1]);
+    printf("goto L%d \n",tokenLabls[labTokenStackTop - 3]);
+    printf("L%d: \n",tokenLabls[labTokenStackTop - 1]);
     return;
 }
 
-void for4()
+void ForAfter()
 {
-    printf("goto L%d \n",label[ltop]);    
-    printf("L%d: \n",label[ltop-2]);
-   	ltop -= 4;
+    printf("goto L%d \n",tokenLabls[labTokenStackTop]);    
+    printf("L%d: \n",tokenLabls[labTokenStackTop-2]);
+   	labTokenStackTop -= 4;
    	return;
 }

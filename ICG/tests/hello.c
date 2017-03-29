@@ -22,7 +22,7 @@ int d;
 
 int main()
 {
-	double n=2.2;
+	double n=2;
 	int a;
 	int c[20];
 	int d = n+b;

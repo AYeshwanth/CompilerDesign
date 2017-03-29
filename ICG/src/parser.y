@@ -37,7 +37,7 @@
 %type<iValue> Type
 %type<realValue> NUM
 %type<str> Assignment ArrayUsage StatementDeclaration ValueVar REAL Expr STRING assign_operator Expression Oper VariableInit
-Stmt StmtList CompoundStmt
+Stmt StmtList CompoundStmt Conditional_statement Conditonal_condition Conditional_Operator
 %union {
  		int iValue; /* integer value */
  		float realValue;
@@ -63,7 +63,7 @@ Declaration: Type StatementDeclaration ';' {insertWithError($1, g_addr); g_addr+
 	| error	
 	;
 
-StatementDeclaration: ID {pushicg($1);} assign_operator {pushicg($3);} VariableInit ',' StatementDeclaration 
+StatementDeclaration: ID {PushICGStack($1);} assign_operator {PushICGStack($3);} VariableInit ',' StatementDeclaration 
 	{ 
 		if(IsAlreadyPresent($1)){
 			printf("\n%s Already declared\n", $1);
@@ -72,7 +72,7 @@ StatementDeclaration: ID {pushicg($1);} assign_operator {pushicg($3);} VariableI
 			identifierList.push_back($1); 
 			$$ = $1;
 		}
-		codegen_assign();
+		ICGCurrAssignCodeGenr();
 	}
 	| ID ',' StatementDeclaration
 	{ 
@@ -94,7 +94,7 @@ StatementDeclaration: ID {pushicg($1);} assign_operator {pushicg($3);} VariableI
 		}
 	
 	}
-	| ID {pushicg($1);} assign_operator {pushicg($3);} VariableInit
+	| ID {PushICGStack($1);} assign_operator {PushICGStack($3);} VariableInit
 		{ 
 		if(IsAlreadyPresent($1))
 			printf("\n%s Already declared\n", $1);
@@ -102,35 +102,36 @@ StatementDeclaration: ID {pushicg($1);} assign_operator {pushicg($3);} VariableI
 			identifierList.push_back($1); 
 			$$ = $1;
 		}
-		codegen_assign();
+		ICGCurrAssignCodeGenr();
 	}
-	| ID {pushicg($1);} assign_operator {pushicg($3);} Conditional_statement
-	{ 
+	| ID {PushICGStack($1);} assign_operator {PushICGStack($3);} Conditional_statement
+		{ 
 		if(IsAlreadyPresent($1))
 			printf("\n%s Already declared\n", $1);
 		else{
 			identifierList.push_back($1); 
 			$$ = $1;
 		}
-		codegen_assign();
+		printf("------ Here ------");
+		ICGCurrAssignCodeGenr();
 	}
 	;
 
 VariableInit: ValueVar {$$ = $1;}
-	| ValueVar Oper {{ strcpy(tstack[++top], $2); }} ValueVar 
+	| ValueVar Oper {{ strcpy(tokenStack[++tokenStackTop], $2); }} ValueVar 
 	{
 		if(!check($1, $4))
 			printf("Type mismatch %s %s\n", $1, $4);
 		else
 		  	$$ = $1;
-		codegen();
+		ICGCurrCodeGenr();
 	}
 	;
 
-ValueVar: ID {pushicg($1); $$ = $1;}
-	| NUM {pushicg(ToString($1)); $$ = ToString($1);}
-	| REAL {pushicg($1); $$ = $1;}
-	| STRING {pushicg($1); $$ = $1;}
+ValueVar: ID { printf("----- Here : %s ------", $1); PushICGStack($1); $$ = $1;}
+	| NUM {PushICGStack(ToString($1)); $$ = ToString($1);}
+	| REAL {PushICGStack($1); $$ = $1;}
+	| STRING {PushICGStack($1); $$ = $1;}
 	;
 
 Oper: '+' 
@@ -139,7 +140,19 @@ Oper: '+'
 	| '/'
 	;
 /* Assignment block */
-Assignment: ID { pushicg($1);} assign_operator { pushicg($3); } Expression 
+Assignment: ID { PushICGStack($1);} assign_operator { PushICGStack($3); } Expression 
+	{
+		if(!IsAlreadyPresent($1)){
+			printf("%s Undeclared Variable.", $1);
+		}else{
+			if(!check($1, $5))
+				;
+			else
+			  	$$ = $1;
+		}
+		ICGCurrAssignCodeGenr();
+	}
+	| ID {PushICGStack($1);} assign_operator {PushICGStack($3);} Conditional_statement
 	{
 		if(!IsAlreadyPresent($1)){
 			printf("%s Undeclared Variable.", $1);
@@ -149,7 +162,7 @@ Assignment: ID { pushicg($1);} assign_operator { pushicg($3); } Expression
 			else
 			  	$$ = $1;
 		}
-		codegen_assign();
+		ICGCurrAssignCodeGenr();	
 	}
 	| ArrayUsage assign_operator Expression
 	| ID ',' Assignment
@@ -171,37 +184,37 @@ Assignment: ID { pushicg($1);} assign_operator { pushicg($3); } Expression
 	;
 
 
-Expression: Expression '+' { strcpy(tstack[++top], "+"); } Expression
+Expression: Expression '+' { strcpy(tokenStack[++tokenStackTop], "+"); } Expression
 	{ 
 		if(!check($1,$4))
 			printf("Type Mismatch %s %s \n",$1,$4);
 		else
 			$$ = $1;
-		codegen();
+		ICGCurrCodeGenr();
 	}
-	|	Expression '-' { strcpy(tstack[++top], ""); } Expression
+	|	Expression '-' { strcpy(tokenStack[++tokenStackTop], ""); } Expression
 	{ 
 		if(!check($1,$4))
 			printf("Type Mismatch %s %s \n",$1,$4);
 		else
 			$$ = $1;
-		codegen();
+		ICGCurrCodeGenr();
 	}
-	|	Expression '*' { strcpy(tstack[++top], "*"); } Expression
+	|	Expression '*' { strcpy(tokenStack[++tokenStackTop], "*"); } Expression
 	{ 
 		if(!check($1,$4))
 			printf("Type Mismatch %s %s \n",$1,$4);
 		else
 			$$ = $1;
-		codegen();
+		ICGCurrCodeGenr();
 	}
-	|	Expression '/' { strcpy(tstack[++top], "/"); } Expression
+	|	Expression '/' { strcpy(tokenStack[++tokenStackTop], "/"); } Expression
 	{ 
 		if(!check($1,$4))
 			printf("Type Mismatch %s %s \n",$1,$4);
 		else
 			$$ = $1;
-		codegen();
+		ICGCurrCodeGenr();
 	}
 	| '(' Expression ')' 
 		{ 
@@ -210,19 +223,19 @@ Expression: Expression '+' { strcpy(tstack[++top], "+"); } Expression
 	|   NUM 
 		{ 
 			$$ = ToString($1);
-			pushicg(ToString($1)); 
+			PushICGStack(ToString($1)); 
 		}
 	|   REAL 
 		{
 			$$ = $1; 
-			pushicg($1); 
+			PushICGStack($1); 
 		}
 	|   ID 
 		{ 
 			$$ = $1; 
-			pushicg($1); 
+			PushICGStack($1); 
 		}
-	| 	ArrayUsage { codegen_array(); } 
+	| 	ArrayUsage { ICGCurrArrayCodeGenr(); } 
 	;
 
 assign_operator: '=' {char assign[2] = "="; $$=assign;}
@@ -239,7 +252,7 @@ FunctionCall : ID'('')'
 	;
 
 /* Array Usage */
-ArrayUsage : ID {pushicg($1);} '['Assignment']' 
+ArrayUsage : ID {PushICGStack($1);} '['Assignment']' 
 	;
 
 
@@ -262,7 +275,6 @@ StmtList:	StmtList Stmt {$$ = $2;}
 	;
 Stmt: Declaration {$$ = empty;}
 	| ForStmt {$$ = empty;}
-	| IfStmt {$$ = empty;}
 	| PrintFunc {$$ = empty;}
 	| ';' {$$ = empty;}
 	| RETURN ';' {$$ = empty;}
@@ -278,14 +290,8 @@ Type:	INT
 	;
 
 /* For Block */
-ForStmt: FOR '(' Expr {for1();} ';' Expr {for2();} ';' Expr {for3();} ')' Stmt {for4();} 
-       | FOR '(' Expr {for1();}';' Expr {for2();} ';' Expr {for3();} ')' CompoundStmt {for4();}
-	;
-
-/* IfStmt Block */
-IfStmt : IF '(' Expr ')' Stmt
-		| IF '(' Expr ')' CompoundStmt
-        | IF '(' Expr ')' CompoundStmt ELSE CompoundStmt
+ForStmt: FOR '(' Expr {ForInitialisation();} ';' Expr {ForCondition();} ';' Expr {ForChange();} ')' Stmt {ForAfter();} 
+       | FOR '(' Expr {ForInitialisation();}';' Expr {ForCondition();} ';' Expr {ForChange();} ')' CompoundStmt {ForAfter();}
 	;
 
 /* Struct Statement */
@@ -310,16 +316,14 @@ RelationalOperator: LE
 	| LT
 	;
 
+
+Conditional_statement: '(' Conditional_Operator ')'
+
 /* Conditional Statement */
-Conditional_statement:  Conditonal_condition '?' ValueVar ':' ValueVar 
+Conditional_Operator: Conditonal_condition {ifAssignment();} '?' Expression {ifCondition();} ':' Expression { ifAfter(); $$ = $1;}
 	;
 
-Conditonal_condition: ValueVar LE ValueVar 
-	| ValueVar GE ValueVar
-	| ValueVar NE ValueVar
-	| ValueVar EQ ValueVar
-	| ValueVar GT ValueVar
-	| ValueVar LT ValueVar
+Conditonal_condition: Expression RelationalOperator Expression 
 	;
 
 
