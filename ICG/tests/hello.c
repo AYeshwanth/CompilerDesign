@@ -33,12 +33,8 @@ int main()
 	int zzz = 10;
 	hi *= 5;
 	int x = yy>xy ? xx:yx;
-	for(i+=0;i<=n;i++)
-	{
-		int a;
-		int mohit;
-		printf("\n");
+	for(i+=0;i<=n;i++){
+		xy += xx;
 	}
-	mohit *= 5;
 	return;
 }
