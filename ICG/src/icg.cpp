@@ -40,6 +40,39 @@ void ICGCurrAssignCodeGenr()
 	return;
 }
 
+
+void ForCondition()
+{
+    strcpy(tempVarName,"t");
+    strcat(tempVarName,id);
+    id[0]++;
+    printf("%s = not %s\n",tempVarName,tokenStack[tokenStackTop--]);
+    lanNumber++;
+    printf("if %s goto L%d\n",tempVarName,lanNumber);
+    tokenLabls[++labTokenStackTop] = lanNumber;
+    lanNumber++;
+    printf("goto L%d\n",lanNumber);
+    tokenLabls[++labTokenStackTop] = lanNumber;
+    lanNumber++; 
+    printf("L%d: \n",lanNumber);
+    tokenLabls[++labTokenStackTop] = lanNumber;
+    return;
+}
+void ForChange()
+{
+    printf("goto L%d \n",tokenLabls[labTokenStackTop - 3]);
+    printf("L%d: \n",tokenLabls[labTokenStackTop - 1]);
+    return;
+}
+
+void ForAfter()
+{
+    printf("goto L%d \n",tokenLabls[labTokenStackTop]);    
+    printf("L%d: \n",tokenLabls[labTokenStackTop-2]);
+   	labTokenStackTop -= 4;
+   	return;
+}
+
 void ICGCurrArrayCodeGenr()
 {
 	strcpy(tempVarName, "t");
@@ -100,34 +133,3 @@ void ForInitialisation()
 	return;
 }
 
-void ForCondition()
-{
-    strcpy(tempVarName,"t");
-    strcat(tempVarName,id);
-    id[0]++;
-    printf("%s = not %s\n",tempVarName,tokenStack[tokenStackTop--]);
-    lanNumber++;
-    printf("if %s goto L%d\n",tempVarName,lanNumber);
-    tokenLabls[++labTokenStackTop] = lanNumber;
-    lanNumber++;
-    printf("goto L%d\n",lanNumber);
-    tokenLabls[++labTokenStackTop] = lanNumber;
-    lanNumber++; 
-    printf("L%d: \n",lanNumber);
-    tokenLabls[++labTokenStackTop] = lanNumber;
-    return;
-}
-void ForChange()
-{
-    printf("goto L%d \n",tokenLabls[labTokenStackTop - 3]);
-    printf("L%d: \n",tokenLabls[labTokenStackTop - 1]);
-    return;
-}
-
-void ForAfter()
-{
-    printf("goto L%d \n",tokenLabls[labTokenStackTop]);    
-    printf("L%d: \n",tokenLabls[labTokenStackTop-2]);
-   	labTokenStackTop -= 4;
-   	return;
-}

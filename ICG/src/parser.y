@@ -165,9 +165,9 @@ Assignment: ID { PushICGStack($1);} EqualTo { PushICGStack($3); } Expression
 			else
 			  	$$ = $1;
 		}
-		ICGCurrAssignCodeGenr();	
+		ICGCurrAssignCodeGenr();  
 	}
-	| ArrayUsage EqualTo Expression
+	| ArrayUsage EqualTo Expression { ICGCurrArrayCodeGenr(); }
 	| ID ',' Assignment
 	{
 		if(!IsAlreadyPresent($1)){
@@ -296,7 +296,7 @@ Type:	INT
 	;
 
 /* For Block */
-ForStmt: FOR '(' Expr {ForInitialisation();} ';' Expr {ForCondition();} ';' Expr {ForChange();} ')' Stmt {ForAfter();} 
+ForStmt: FOR '(' Expr {ForInitialisation();} ';' Expr {ICGCurrCodeGenr(); ForCondition();} ';' Expr {ForChange();} ')' Stmt {ForAfter();} 
        | FOR '(' Expr {ForInitialisation();}';' Expr {ForCondition();} ';' Expr {ForChange();} ')' CompoundStmt {ForAfter();}
 	;
 

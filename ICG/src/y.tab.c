@@ -1676,9 +1676,15 @@ yyreduce:
 			else
 			  	(yyval.str) = (yyvsp[-4].str);
 		}
-		ICGCurrAssignCodeGenr();	
+		ICGCurrAssignCodeGenr();  
 	}
 #line 1682 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 41:
+#line 170 "parser.y" /* yacc.c:1646  */
+    { ICGCurrArrayCodeGenr(); }
+#line 1688 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
@@ -1693,43 +1699,43 @@ yyreduce:
 			  	(yyval.str) = (yyvsp[-2].str);
 		}
 	}
-#line 1697 "y.tab.c" /* yacc.c:1646  */
+#line 1703 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
 #line 182 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[-1].str);}
-#line 1703 "y.tab.c" /* yacc.c:1646  */
+#line 1709 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
 #line 183 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[-1].str);}
-#line 1709 "y.tab.c" /* yacc.c:1646  */
+#line 1715 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
 #line 184 "parser.y" /* yacc.c:1646  */
     { (yyval.str) = (yyvsp[0].str);}
-#line 1715 "y.tab.c" /* yacc.c:1646  */
+#line 1721 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
 #line 185 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = ToString((yyvsp[0].realValue));}
-#line 1721 "y.tab.c" /* yacc.c:1646  */
+#line 1727 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
 #line 186 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1727 "y.tab.c" /* yacc.c:1646  */
+#line 1733 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
 #line 190 "parser.y" /* yacc.c:1646  */
     { strcpy(tokenStack[++tokenStackTop], "+"); }
-#line 1733 "y.tab.c" /* yacc.c:1646  */
+#line 1739 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
@@ -1741,13 +1747,13 @@ yyreduce:
 			(yyval.str) = (yyvsp[-3].str);
 		ICGCurrCodeGenr();
 	}
-#line 1745 "y.tab.c" /* yacc.c:1646  */
+#line 1751 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
 #line 198 "parser.y" /* yacc.c:1646  */
     { strcpy(tokenStack[++tokenStackTop], ""); }
-#line 1751 "y.tab.c" /* yacc.c:1646  */
+#line 1757 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
@@ -1759,13 +1765,13 @@ yyreduce:
 			(yyval.str) = (yyvsp[-3].str);
 		ICGCurrCodeGenr();
 	}
-#line 1763 "y.tab.c" /* yacc.c:1646  */
+#line 1769 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
 #line 206 "parser.y" /* yacc.c:1646  */
     { strcpy(tokenStack[++tokenStackTop], "*"); }
-#line 1769 "y.tab.c" /* yacc.c:1646  */
+#line 1775 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
@@ -1777,13 +1783,13 @@ yyreduce:
 			(yyval.str) = (yyvsp[-3].str);
 		ICGCurrCodeGenr();
 	}
-#line 1781 "y.tab.c" /* yacc.c:1646  */
+#line 1787 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
 #line 214 "parser.y" /* yacc.c:1646  */
     { strcpy(tokenStack[++tokenStackTop], "/"); }
-#line 1787 "y.tab.c" /* yacc.c:1646  */
+#line 1793 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
@@ -1795,7 +1801,7 @@ yyreduce:
 			(yyval.str) = (yyvsp[-3].str);
 		ICGCurrCodeGenr();
 	}
-#line 1799 "y.tab.c" /* yacc.c:1646  */
+#line 1805 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
@@ -1803,7 +1809,7 @@ yyreduce:
     { 
 			(yyval.str) = (yyvsp[-1].str); 
 		}
-#line 1807 "y.tab.c" /* yacc.c:1646  */
+#line 1813 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
@@ -1812,7 +1818,7 @@ yyreduce:
 			(yyval.str) = ToString((yyvsp[0].realValue));
 			PushICGStack(ToString((yyvsp[0].realValue))); 
 		}
-#line 1816 "y.tab.c" /* yacc.c:1646  */
+#line 1822 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
@@ -1821,7 +1827,7 @@ yyreduce:
 			(yyval.str) = (yyvsp[0].str); 
 			PushICGStack((yyvsp[0].str)); 
 		}
-#line 1825 "y.tab.c" /* yacc.c:1646  */
+#line 1831 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
@@ -1830,221 +1836,221 @@ yyreduce:
 			(yyval.str) = (yyvsp[0].str); 
 			PushICGStack((yyvsp[0].str)); 
 		}
-#line 1834 "y.tab.c" /* yacc.c:1646  */
+#line 1840 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
 #line 241 "parser.y" /* yacc.c:1646  */
     { ICGCurrArrayCodeGenr(); }
-#line 1840 "y.tab.c" /* yacc.c:1646  */
+#line 1846 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
 #line 245 "parser.y" /* yacc.c:1646  */
     {char assign[2] = "="; (yyval.str)=assign;}
-#line 1846 "y.tab.c" /* yacc.c:1646  */
+#line 1852 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
 #line 261 "parser.y" /* yacc.c:1646  */
     {PushICGStack((yyvsp[0].str));}
-#line 1852 "y.tab.c" /* yacc.c:1646  */
+#line 1858 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
 #line 266 "parser.y" /* yacc.c:1646  */
     { insert((yyvsp[-4].str),FUNCTION,g_addr); insert((yyvsp[-4].str),(yyvsp[-5].iValue),g_addr);g_addr+=4; }
-#line 1858 "y.tab.c" /* yacc.c:1646  */
+#line 1864 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
 #line 277 "parser.y" /* yacc.c:1646  */
     {saveST();}
-#line 1864 "y.tab.c" /* yacc.c:1646  */
+#line 1870 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
 #line 277 "parser.y" /* yacc.c:1646  */
     {popST(); (yyval.str) = (yyvsp[-1].str);}
-#line 1870 "y.tab.c" /* yacc.c:1646  */
+#line 1876 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
 #line 279 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1876 "y.tab.c" /* yacc.c:1646  */
+#line 1882 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
 #line 280 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = empty;}
-#line 1882 "y.tab.c" /* yacc.c:1646  */
+#line 1888 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
 #line 282 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = empty;}
-#line 1888 "y.tab.c" /* yacc.c:1646  */
+#line 1894 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
 #line 283 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = empty;}
-#line 1894 "y.tab.c" /* yacc.c:1646  */
+#line 1900 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
 #line 284 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = empty;}
-#line 1900 "y.tab.c" /* yacc.c:1646  */
+#line 1906 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
 #line 285 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = empty;}
-#line 1906 "y.tab.c" /* yacc.c:1646  */
+#line 1912 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
 #line 286 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = empty;}
-#line 1912 "y.tab.c" /* yacc.c:1646  */
+#line 1918 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
 #line 287 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[-1].str);}
-#line 1918 "y.tab.c" /* yacc.c:1646  */
+#line 1924 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
 #line 288 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = empty;}
-#line 1924 "y.tab.c" /* yacc.c:1646  */
+#line 1930 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
 #line 289 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = empty;}
-#line 1930 "y.tab.c" /* yacc.c:1646  */
+#line 1936 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
 #line 299 "parser.y" /* yacc.c:1646  */
     {ForInitialisation();}
-#line 1936 "y.tab.c" /* yacc.c:1646  */
+#line 1942 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
 #line 299 "parser.y" /* yacc.c:1646  */
-    {ForCondition();}
-#line 1942 "y.tab.c" /* yacc.c:1646  */
+    {ICGCurrCodeGenr(); ForCondition();}
+#line 1948 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
 #line 299 "parser.y" /* yacc.c:1646  */
     {ForChange();}
-#line 1948 "y.tab.c" /* yacc.c:1646  */
+#line 1954 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
 #line 299 "parser.y" /* yacc.c:1646  */
     {ForAfter();}
-#line 1954 "y.tab.c" /* yacc.c:1646  */
+#line 1960 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
 #line 300 "parser.y" /* yacc.c:1646  */
     {ForInitialisation();}
-#line 1960 "y.tab.c" /* yacc.c:1646  */
+#line 1966 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
 #line 300 "parser.y" /* yacc.c:1646  */
     {ForCondition();}
-#line 1966 "y.tab.c" /* yacc.c:1646  */
+#line 1972 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
 #line 300 "parser.y" /* yacc.c:1646  */
     {ForChange();}
-#line 1972 "y.tab.c" /* yacc.c:1646  */
+#line 1978 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
 #line 300 "parser.y" /* yacc.c:1646  */
     {ForAfter();}
-#line 1978 "y.tab.c" /* yacc.c:1646  */
+#line 1984 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
 #line 304 "parser.y" /* yacc.c:1646  */
     { insert((yyvsp[-5].str),STRUCT,g_addr); g_addr+=4; }
-#line 1984 "y.tab.c" /* yacc.c:1646  */
+#line 1990 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 99:
 #line 317 "parser.y" /* yacc.c:1646  */
     {strcpy(tokenStack[++tokenStackTop], "<=");}
-#line 1990 "y.tab.c" /* yacc.c:1646  */
+#line 1996 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
 #line 318 "parser.y" /* yacc.c:1646  */
     {strcpy(tokenStack[++tokenStackTop], ">=");}
-#line 1996 "y.tab.c" /* yacc.c:1646  */
+#line 2002 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 101:
 #line 319 "parser.y" /* yacc.c:1646  */
     {strcpy(tokenStack[++tokenStackTop], "!=");}
-#line 2002 "y.tab.c" /* yacc.c:1646  */
+#line 2008 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 102:
 #line 320 "parser.y" /* yacc.c:1646  */
     {strcpy(tokenStack[++tokenStackTop], "==");}
-#line 2008 "y.tab.c" /* yacc.c:1646  */
+#line 2014 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 103:
 #line 321 "parser.y" /* yacc.c:1646  */
     {strcpy(tokenStack[++tokenStackTop], ">");}
-#line 2014 "y.tab.c" /* yacc.c:1646  */
+#line 2020 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 104:
 #line 322 "parser.y" /* yacc.c:1646  */
     {strcpy(tokenStack[++tokenStackTop], "<");}
-#line 2020 "y.tab.c" /* yacc.c:1646  */
+#line 2026 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 106:
 #line 329 "parser.y" /* yacc.c:1646  */
     {ifAssignment();}
-#line 2026 "y.tab.c" /* yacc.c:1646  */
+#line 2032 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 107:
 #line 329 "parser.y" /* yacc.c:1646  */
     {ifCondition();}
-#line 2032 "y.tab.c" /* yacc.c:1646  */
+#line 2038 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 108:
 #line 329 "parser.y" /* yacc.c:1646  */
     { ifAfter(); (yyval.str) = (yyvsp[-6].str);}
-#line 2038 "y.tab.c" /* yacc.c:1646  */
+#line 2044 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 109:
 #line 332 "parser.y" /* yacc.c:1646  */
     {ICGCurrCodeGenr();}
-#line 2044 "y.tab.c" /* yacc.c:1646  */
+#line 2050 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2048 "y.tab.c" /* yacc.c:1646  */
+#line 2054 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
